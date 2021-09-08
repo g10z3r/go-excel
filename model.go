@@ -48,10 +48,10 @@ var ColCoordinates = []string{
 }
 
 type Header struct {
-	CellParams     []HeaderCell // Настройка столбцов
-	SheetColParams []SheetColW  // Настройка колонок
-	SheetRowParams []SheetRowH  // Настройка рядов
-	Style          string       // Стиль для всех ячеек заголовка
+	CellParams []HeaderCell // Настройка столбцов
+	ColParams  []ColWidth   // Настройка колонок
+	RowParams  []RowHeight  // Настройка рядов
+	Style      string       // Стиль для всех ячеек заголовка
 }
 
 // Ячейка заголовка
@@ -61,14 +61,14 @@ type HeaderCell struct {
 }
 
 // Ширина колонки листа
-type SheetColW struct {
+type ColWidth struct {
 	StartCol string // Начальная колонка применения ширины
 	EndCol   string // Финальная колонка применения ширины
 	Width    int    // Ширина
 }
 
 // Высота ряда на листе
-type SheetRowH struct {
+type RowHeight struct {
 	Row    int // Номер ряда
 	Height int // Высота
 }

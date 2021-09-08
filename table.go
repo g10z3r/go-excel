@@ -9,7 +9,7 @@ import (
 // Создать шапку таблицы
 func CreateHead(f *excelize.File, p Header, sheet string) error {
 	// Устанавливаю параметры в столбцы шапки
-	for _, v := range p.SheetColParams {
+	for _, v := range p.ColParams {
 		f.SetColWidth(sheet, v.StartCol, v.EndCol, float64(v.Width))
 	}
 	// Устанавливаю значения в столбцы шапки
@@ -17,7 +17,7 @@ func CreateHead(f *excelize.File, p Header, sheet string) error {
 		f.SetCellValue(sheet, v.Axis, v.Value)
 	}
 	// Устанавливаю значения ряд шапки
-	for _, v := range p.SheetRowParams {
+	for _, v := range p.RowParams {
 		f.SetRowHeight(sheet, v.Row, float64(v.Height))
 	}
 	// Создаю стиль для шапки
