@@ -48,7 +48,7 @@ func CreateHeaderCell(cellsList []string, row string) []HeaderCell {
 }
 
 // Записать данные в таблицу
-func SetDataToRows(f *excelize.File, data [][]interface{}, sheet string, startFrom int, rHeight float64) error {
+func SetDataToRows(f *excelize.File, data [][]interface{}, sheet string, startFrom int, rHeight float64, style []string) error {
 	var lastColl string
 	for i, v := range data {
 		for ii, vv := range v {
@@ -58,7 +58,7 @@ func SetDataToRows(f *excelize.File, data [][]interface{}, sheet string, startFr
 		// Высота ряда
 		f.SetRowHeight(sheet, i+startFrom, rHeight)
 		// Устанавливаю стиль
-		if err := setStyleForRow(f, sheet, i, 2, GreenRowStyle, LightGreenRowStyle, []string{"A", lastColl}); err != nil {
+		if err := setStyleForRow(f, sheet, i, 2, style[0], style[1], []string{"A", lastColl}); err != nil {
 			return err
 		}
 	}
