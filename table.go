@@ -1,39 +1,42 @@
 package excel
 
 import (
-	"os"
 	"strconv"
 
 	"github.com/xuri/excelize/v2"
 )
 
-func CreateDefaultTable(savePathName string, tableHead Header, data [][]interface{}, sheet string) error {
-	file, err := os.OpenFile(
-		savePathName,
-		os.O_CREATE|os.O_APPEND, os.ModePerm,
-	)
+// Создать стандартную таблицу
+func CreateDefaultTable(table DefaultTable) error {
+	// Инициализирую рабочий файл
+	f, err := excelize.OpenFile(table.PathName)
 	if err != nil {
 		return err
 	}
-	defer file.Close()
-
-	f := excelize.NewFile()
-	index := f.NewSheet(sheet)
+	// Инициализирую текущий лист
+	index := f.NewSheet(table.Sheet)
 
 	// Добавляю шапку
-	if err := CreateHead(f, tableHead, sheet); err != nil {
+	if err := CreateHead(f, table.TableHeader, table.Sheet); err != nil {
 		return err
 	}
 
 	// Наполняю таблицу данными
-	if err := SetDataToRows(f, data, sheet, 2, 18, []string{GreenRowStyle, LightGreenRowStyle}); err != nil {
+	if err := SetDataToRows(
+		f,
+		table.Data,
+		table.Sheet,
+		table.ContentLineStart,
+		table.ContentRowHeight,
+		[]string{GreenRowStyle, LightGreenRowStyle}); err != nil {
 		return err
 	}
 
 	f.SetActiveSheet(index)
 	f.DeleteSheet("Sheet1")
 
-	if err := f.SaveAs(savePathName); err != nil {
+	// Сохраняю изменения
+	if err := f.SaveAs(table.PathName); err != nil {
 		return err
 	}
 	return nil
@@ -91,7 +94,7 @@ func SetDataToRows(f *excelize.File, data [][]interface{}, sheet string, startFr
 		// Высота ряда
 		f.SetRowHeight(sheet, i+startFrom, rHeight)
 		// Устанавливаю стиль
-		if err := setStyleForRow(f, sheet, i, 2, style[0], style[1], []string{"A", lastColl}); err != nil {
+		if err := setStyleForRow(f, sheet, i, startFrom, style[0], style[1], []string{"A", lastColl}); err != nil {
 			return err
 		}
 	}

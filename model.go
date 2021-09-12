@@ -72,3 +72,12 @@ type RowHeight struct {
 	Row    int // Номер ряда
 	Height int // Высота
 }
+
+type DefaultTable struct {
+	PathName         string
+	TableHeader      Header
+	Data             [][]interface{}
+	Sheet            string
+	ContentRowHeight float64
+	ContentLineStart int
+}
