@@ -1,10 +1,43 @@
 package excel
 
 import (
+	"os"
 	"strconv"
 
 	"github.com/xuri/excelize/v2"
 )
+
+func CreateDefaultTable(savePathName string, tableHead Header, data [][]interface{}, sheet string) error {
+	file, err := os.OpenFile(
+		savePathName,
+		os.O_CREATE|os.O_APPEND, os.ModePerm,
+	)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	f := excelize.NewFile()
+	index := f.NewSheet(sheet)
+
+	// Добавляю шапку
+	if err := CreateHead(f, tableHead, sheet); err != nil {
+		return err
+	}
+
+	// Наполняю таблицу данными
+	if err := SetDataToRows(f, data, sheet, 2, 18, []string{GreenRowStyle, LightGreenRowStyle}); err != nil {
+		return err
+	}
+
+	f.SetActiveSheet(index)
+	f.DeleteSheet("Sheet1")
+
+	if err := f.SaveAs(savePathName); err != nil {
+		return err
+	}
+	return nil
+}
 
 // Создать шапку таблицы
 func CreateHead(f *excelize.File, p Header, sheet string) error {
