@@ -6,44 +6,32 @@ import (
 	"github.com/xuri/excelize/v2"
 )
 
+func CreateCustomTable(table CustomTable) error {
+	if err := createTable(table); err != nil {
+		return err
+	}
+	return nil
+}
+
 // Создать стандартную таблицу
-func CreateDefaultTable(table DefaultTable) error {
-	// Инициализирую рабочий файл
-	f, err := excelize.OpenFile(table.PathName)
-	if err != nil {
-		return err
-	}
-	// Инициализирую текущий лист
-	index := f.NewSheet(table.Sheet)
-
-	// Добавляю шапку
-	if err := CreateHead(f, table.TableHeader, table.Sheet); err != nil {
-		return err
-	}
-
-	// Наполняю таблицу данными
-	if err := SetDataToRows(
-		f,
-		table.Data,
-		table.Sheet,
-		table.ContentLineStart,
-		table.ContentRowHeight,
-		[]string{GreenRowStyle, LightGreenRowStyle}); err != nil {
-		return err
-	}
-
-	f.SetActiveSheet(index)
-	f.DeleteSheet("Sheet1")
-
-	// Сохраняю изменения
-	if err := f.SaveAs(table.PathName); err != nil {
+func CreateDefaultTable(t DefaultTable) error {
+	if err := createTable(CustomTable{
+		PathName:         t.PathName,
+		TableHeader:      t.TableHeader,
+		Data:             t.Data,
+		Sheet:            t.Sheet,
+		ContentRowHeight: t.ContentRowHeight,
+		ContentLineStart: t.ContentLineStart,
+		HeadStyle:        GreenHeadStyle,
+		RowStyle:         []string{LightGreenRowStyle, GreenRowStyle},
+	}); err != nil {
 		return err
 	}
 	return nil
 }
 
 // Создать шапку таблицы
-func CreateHead(f *excelize.File, p Header, sheet string) error {
+func CreateHead(f *excelize.File, p Header, sheet, hStyle string) error {
 	// Устанавливаю параметры в столбцы шапки
 	for _, v := range p.ColParams {
 		f.SetColWidth(sheet, v.StartCol, v.EndCol, float64(v.Width))
@@ -57,7 +45,7 @@ func CreateHead(f *excelize.File, p Header, sheet string) error {
 		f.SetRowHeight(sheet, v.Row, float64(v.Height))
 	}
 	// Создаю стиль для шапки
-	style, err := f.NewStyle(p.Style)
+	style, err := f.NewStyle(hStyle)
 	if err != nil {
 		return err
 	}
@@ -124,6 +112,41 @@ func setStyleForRow(f *excelize.File, sheet string, i, startFrom int, style1, st
 		startEndCells[1]+strconv.Itoa(i+startFrom),
 		style,
 	); err != nil {
+		return err
+	}
+	return nil
+}
+
+func createTable(table CustomTable) error {
+	// Инициализирую рабочий файл
+	f, err := excelize.OpenFile(table.PathName)
+	if err != nil {
+		return err
+	}
+	// Инициализирую текущий лист
+	index := f.NewSheet(table.Sheet)
+
+	// Добавляю шапку
+	if err := CreateHead(f, table.TableHeader, table.Sheet, table.HeadStyle); err != nil {
+		return err
+	}
+
+	// Наполняю таблицу данными
+	if err := SetDataToRows(
+		f,
+		table.Data,
+		table.Sheet,
+		table.ContentLineStart,
+		table.ContentRowHeight,
+		[]string{GreenRowStyle, LightGreenRowStyle}); err != nil {
+		return err
+	}
+
+	f.SetActiveSheet(index)
+	f.DeleteSheet("Sheet1")
+
+	// Сохраняю изменения
+	if err := f.SaveAs(table.PathName); err != nil {
 		return err
 	}
 	return nil
