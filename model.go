@@ -51,7 +51,6 @@ type Header struct {
 	CellParams []HeaderCell // Настройка столбцов
 	ColParams  []ColWidth   // Настройка колонок
 	RowParams  []RowHeight  // Настройка рядов
-	Style      string       // Стиль для всех ячеек заголовка
 }
 
 // Ячейка заголовка
@@ -80,4 +79,16 @@ type DefaultTable struct {
 	Sheet            string
 	ContentRowHeight float64
 	ContentLineStart int
+}
+
+type CustomTable struct {
+	PathName         string
+	TableHeader      Header
+	Data             [][]interface{}
+	Sheet            string
+	ContentRowHeight float64
+	ContentLineStart int
+
+	HeadStyle string
+	RowStyle  []string
 }
