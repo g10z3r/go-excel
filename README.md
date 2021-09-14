@@ -18,7 +18,13 @@
 
 ```go get https://github.com/I0HuKc/go-excel```
 
-Then import the library into your `go` file
+Then import the library into your `go` file:
+
+```go
+import (
+    excel "github.com/I0HuKc/go-excel"
+)
+```
 
 ### Brief examples
 
