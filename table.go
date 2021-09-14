@@ -6,6 +6,7 @@ import (
 	"github.com/xuri/excelize/v2"
 )
 
+// Create table with custom styles
 func CreateCustomTable(table CustomTable) error {
 	if err := createTable(table); err != nil {
 		return err
@@ -13,7 +14,7 @@ func CreateCustomTable(table CustomTable) error {
 	return nil
 }
 
-// Создать стандартную таблицу
+// Create default table
 func CreateDefaultTable(t DefaultTable) error {
 	if err := createTable(CustomTable{
 		PathName:         t.PathName,
@@ -30,7 +31,7 @@ func CreateDefaultTable(t DefaultTable) error {
 	return nil
 }
 
-// Создать шапку таблицы
+// Create table header
 func CreateHead(f *excelize.File, p Header, sheet, hStyle string) error {
 	// Устанавливаю параметры в столбцы шапки
 	for _, v := range p.ColParams {
@@ -59,7 +60,7 @@ func CreateHead(f *excelize.File, p Header, sheet, hStyle string) error {
 	return nil
 }
 
-// Создать объект колонок из переданного списка названий
+// Create a column object from a given list of titles
 func CreateHeaderCell(cellsList []string, row string) []HeaderCell {
 	var cells []HeaderCell
 	for i, v := range cellsList {
@@ -71,7 +72,7 @@ func CreateHeaderCell(cellsList []string, row string) []HeaderCell {
 	return cells
 }
 
-// Записать данные в таблицу
+// Write data to table
 func SetDataToRows(f *excelize.File, data [][]interface{}, sheet string, startFrom int, rHeight float64, style []string) error {
 	var lastColl string
 	for i, v := range data {
@@ -138,7 +139,7 @@ func createTable(table CustomTable) error {
 		table.Sheet,
 		table.ContentLineStart,
 		table.ContentRowHeight,
-		[]string{GreenRowStyle, LightGreenRowStyle}); err != nil {
+		[]string{table.RowStyle[0], table.RowStyle[1]}); err != nil {
 		return err
 	}
 

@@ -25,6 +25,7 @@ const (
 	}`
 )
 
+// Create a header with your background color and font color
 func CustomHeadStyle(fontColor, fillColor string) string {
 	return fmt.Sprintf(`{
 		"border":[
@@ -84,6 +85,7 @@ const (
 	}`
 )
 
+// Create a row style with your background color and font color
 func CustomRowStyle(fontColor, fillColor string) string {
 	return fmt.Sprintf(`{
 		"border":[
