@@ -106,6 +106,14 @@ excel.CreateDefaultTable(excel.DefaultTable{
 	});
 ```
 
+Done!
+
+<p align="center">
+    <img src="assets/table.png" alt="go-excel">
+
+</p>
+
+
 Don't forget to handle errors. The detailed **<a href="https://github.com/I0HuKc/go-excel/tree/main/examples">examples</a>** provide an example of how you can do it.
 
 
