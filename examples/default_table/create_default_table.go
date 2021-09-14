@@ -101,13 +101,13 @@ func main() {
 	}
 
 	// Create a new xlsx file
-	if err = excel.NewFile("data/users.xlsx"); err != nil {
+	if err = excel.NewFile("users.xlsx"); err != nil {
 		fmt.Println(err)
 	}
 
 	// Create default table
 	if err = excel.CreateDefaultTable(excel.DefaultTable{
-		PathName:         "data/users.xlsx",
+		PathName:         "users.xlsx",
 		TableHeader:      tableHeader,
 		Data:             tableValue,
 		Sheet:            "Users",
