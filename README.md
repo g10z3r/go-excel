@@ -17,7 +17,7 @@
 ### Installation
 
 ```
-$ go get https://github.com/I0HuKc/go-excel
+$ go get github.com/I0HuKc/go-excel
 ```
 
 Then import the library into your `go` file:
